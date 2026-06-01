@@ -210,6 +210,8 @@ const MEMBERSHIP_COLORS = {
   '토스': '#0064FF',
 };
 
+
+
 /* ═══════════════════════════════════════════════
  *  BENEFIT CARD COMPONENT
  * ═══════════════════════════════════════════════ */
@@ -601,20 +603,27 @@ export default function DashboardScreen({ route }) {
               styles.badgeRow,
               {
                 opacity: headerFade,
+                transform: [{ translateY: headerSlide }],
               },
             ]}
           >
-            <Text style={styles.badgeLabel}>내 멤버십</Text>
+            <Text style={styles.badgeLabel}>선택된 멤버십</Text>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.badgeScroll}
             >
-              {selectedBrands.map((brand) => (
-                <View key={brand} style={styles.badge}>
-                  <Text style={styles.badgeText}>{getBrandLabel(brand)}</Text>
-                </View>
-              ))}
+              {selectedBrands.map((brand) => {
+                const dotColor = MEMBERSHIP_COLORS[getBrandLabel(brand)] || Colors.royalBlue;
+                return (
+                  <View key={brand} style={styles.badge}>
+                    <View style={[styles.badgeDot, { backgroundColor: dotColor }]} />
+                    <Text style={styles.badgeText}>
+                      {getBrandLabel(brand)}
+                    </Text>
+                  </View>
+                );
+              })}
             </ScrollView>
           </Animated.View>
         )}
@@ -921,6 +930,14 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.full,
     borderWidth: 1,
     borderColor: Colors.borderLight,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  badgeDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginRight: Spacing.xs + 2,
   },
   badgeText: {
     ...Typography.caption,
@@ -1238,5 +1255,79 @@ const styles = StyleSheet.create({
     ...Typography.caption,
     color: Colors.textTertiary,
     marginTop: Spacing.md,
+  },
+
+  /* ── Carrier Selection Grid (Glassmorphism) ── */
+  carrierSection: {
+    marginBottom: Spacing.lg + 4,
+  },
+  carrierSectionTitle: {
+    ...Typography.label,
+    color: Colors.textTertiary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    marginBottom: Spacing.sm + 4,
+  },
+  carrierGrid: {
+    flexDirection: 'row',
+    gap: Spacing.sm + 2,
+  },
+  carrierCardTouchable: {
+    flex: 1,
+  },
+  carrierCard: {
+    borderRadius: 16,
+    borderWidth: 1.5,
+    paddingVertical: Spacing.lg + 2,
+    paddingHorizontal: Spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 104,
+  },
+  carrierDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginBottom: Spacing.sm + 2,
+  },
+  carrierLabel: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: Colors.textPrimary,
+    textAlign: 'center',
+    letterSpacing: -0.5,
+    marginBottom: 3,
+  },
+  carrierSub: {
+    fontSize: 10,
+    fontWeight: '500',
+    color: Colors.textTertiary,
+    textAlign: 'center',
+    letterSpacing: 0.3,
+  },
+
+  /* ── Grade Accordion Pills ── */
+  gradeRow: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    marginTop: Spacing.md + 2,
+    justifyContent: 'center',
+  },
+  gradeChip: {
+    paddingVertical: Spacing.sm + 2,
+    paddingHorizontal: Spacing.md + 6,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+    backgroundColor: Colors.surface,
+  },
+  gradeChipText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Colors.textSecondary,
+    letterSpacing: 0.5,
+  },
+  gradeChipTextActive: {
+    color: Colors.white,
   },
 });
